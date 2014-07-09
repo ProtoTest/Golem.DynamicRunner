@@ -1,0 +1,4 @@
+Run;Open(http://www.google.com);Click($Google Search);Type(#gbqfq,ProtoTest);Click($Beyond Bugs)
+Run;Open(http://www.google.com);Click($Sign in);Type(#Email,prototester1@gmail.com);Type(#Passwd,Proto123!),Click(#signIn)
+Run;Open(http://www.prototest.com);Click($What We Do);Click($White Papers);Type(#ninja_forms_field_4,prototest);Type(#ninja_forms_field_5,User);Type(#ninja_forms_field_6,prototester@mailinator.com);Click(#ninja_forms_field_7)
+Only;Open(http://www.prototest.com);Click($What We Do);Click($Services);Click($Automation);Click($Usability);Click($Performance);Click($Accessibility);Verify($s talk accessibility testing)

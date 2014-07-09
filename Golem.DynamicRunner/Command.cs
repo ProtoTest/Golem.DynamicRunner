@@ -8,57 +8,61 @@ using OpenQA.Selenium;
 
 namespace Golem.DynamicRunner
 {
-    public class Command
+    public abstract class Command
     {
- 
         public BrowserCommands BrowserCommandName { get; set; }
         public By by { get; set; }
         public string param { get; set; }
+        public string commandString { get; set; }
+        public string[] toks { get; set; }
+        
 
-        public Command(BrowserCommands BrowserCommandName, By by, string param = "")
+    /// <summary>
+        /// Click(locator)
+        /// Type(locator,text)
+        /// Back()
+        /// Fforward()
+        /// Open(url)
+        /// Verify(locator)
+        /// Wait(locator,time)
+        /// </summary>
+        /// <param name="commandString"></param>
+        protected Command(string commandString)
         {
-            this.BrowserCommandName = BrowserCommandName;
-            this.by = by;
-            this.param = param;
+            this.commandString = commandString;
+            char[] parens = new[] { '(', ')', ',' };
+            //toks[0] = CommandName
+            toks= commandString.Split(parens);
+            string commandName = toks[0];
+            BrowserCommandName = (BrowserCommands)Enum.Parse(typeof(BrowserCommands), commandName);
+            ParseCommand();
             VerifyCommandSyntax();
         }
 
-        private void VerifyCommandSyntax()
+        protected abstract void ParseCommand();
+
+        protected abstract void VerifyCommandSyntax();
+
+        public abstract void ExecuteCommand();
+
+        public By getByFromString(string locator)
         {
-            switch (BrowserCommandName)
+            By byLocator;
+            if (locator.Contains("//") || locator.Contains("/"))
             {
-                case BrowserCommands.Click :
-                    Assert.IsNotNull(by,"Click command needs a locator : Click(locator)" );
-                    Assert.IsEmpty(param,"Click command should not have a param : Click(locator)");
-                    break;
-                case BrowserCommands.Type:
-                    Assert.IsNotNull(by, "Type command needs a locator : Type(locator,text)");
-                    Assert.IsNotEmpty(param, "Type command should have a param in format Type(locator,text)");
-                    break;
-                case BrowserCommands.Open:
-                    Assert.IsNull(by, "Open command does not use a locator : Open(url)");
-                    Assert.IsNotEmpty(param, "Open command should have a URL as a param : Open(http://www.google.com)");
-                    break;
-                case BrowserCommands.Back:
-                    Assert.IsNull(by, "Back command does not use a locator : Back()");
-                    Assert.IsEmpty(param, "Back command does not accept a param : Back()");
-                    break;
-                case BrowserCommands.Forward:
-                    Assert.IsNull(by, "Forward command does not use a locator : Forward()");
-                    Assert.IsEmpty(param, "Forward command does not accept a param : Forward()");
-                    break;
-                case BrowserCommands.Verify:
-                    Assert.IsNotNull(by, "Verify command needs a locator : Verify(locator)");
-                    Assert.IsEmpty(param, "Verify command should not have a param : Verify(locator)");
-                    break;
-                case BrowserCommands.Wait:
-                    Assert.IsNotNull(by, "Wait command needs a locator : Wait(locator,time)");
-                    Assert.IsNotEmpty(param, "Wait command should have a param : Wait(locator,time)");
-                    break;
-
-
+                byLocator = By.XPath(locator);
+            }
+            if (locator.StartsWith("$"))
+            {
+                byLocator = By.XPath("//*[contains(text(),'" + locator.Substring(1) + "')]");
 
             }
+            else
+            {
+                byLocator = By.CssSelector(locator);
+            }
+            return byLocator;
         }
+      
     }
 }

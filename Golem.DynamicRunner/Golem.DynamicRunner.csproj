@@ -11,6 +11,7 @@
     <AssemblyName>Golem.DynamicRunner</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <WcfConfigValidationEnabled>True</WcfConfigValidationEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -67,6 +68,8 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -81,9 +84,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BrowserCommands.cs" />
+    <Compile Include="Commands\ForwardCommand.cs" />
+    <Compile Include="Commands\BackCommand.cs" />
+    <Compile Include="Commands\VerifyUrl.cs" />
+    <Compile Include="Commands\WaitCommand.cs" />
+    <Compile Include="Commands\VerifyCommand.cs" />
+    <Compile Include="Commands\OpenCommand.cs" />
+    <Compile Include="Commands\TypeCommand.cs" />
+    <Compile Include="Commands\ClickCommand.cs" />
     <Compile Include="Command.cs" />
     <Compile Include="CommandExecutor.cs" />
     <Compile Include="CSVTestFactory.cs" />
+    <Compile Include="IBrowserCommands.cs" />
     <Compile Include="TestRunner.cs" />
     <Compile Include="TestCommands.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

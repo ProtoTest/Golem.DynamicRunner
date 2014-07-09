@@ -14,6 +14,7 @@ namespace Golem.DynamicRunner
         Wait,
         Open,
         Back,
-        Forward
+        Forward,
+        VerifyUrl
     };
 }
